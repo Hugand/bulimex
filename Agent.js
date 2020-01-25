@@ -53,17 +53,17 @@ class Agent{
                         new_perception[0].state = true
                         new_perception[0].pos = i
                         new_perception[0].type = 'food'
-                        break
+                        return new_perception
                     case 0:
                         new_perception[7].state = true
                         new_perception[7].pos = i
                         new_perception[7].type = 'food'
-                        break
+                        return new_perception
                     case 1:
                         new_perception[6].state = true
                         new_perception[6].pos = i
                         new_perception[6].type = 'food'
-                        break
+                        return new_perception
                 }
             }else if(pos_dif.x === 1){
                 switch(pos_dif.y){
@@ -71,17 +71,17 @@ class Agent{
                         new_perception[2].state = true
                         new_perception[2].pos = i
                         new_perception[2].type = 'food'
-                        break
+                        return new_perception
                     case 0:
                         new_perception[3].state = true
                         new_perception[3].pos = i
                         new_perception[3].type = 'food'
-                        break
+                        return new_perception
                     case 1:
                         new_perception[4].state = true
                         new_perception[4].pos = i
                         new_perception[4].type = 'food'
-                        break
+                        return new_perception
                 }
             }else if(pos_dif.x === 0){
                 switch(pos_dif.y){
@@ -89,12 +89,12 @@ class Agent{
                         new_perception[1].state = true
                         new_perception[1].pos = i
                         new_perception[1].type = 'food'
-                        break
+                        return new_perception
                     case 1:
                         new_perception[5].state = true
                         new_perception[5].pos = i
                         new_perception[5].type = 'food'
-                        break
+                        return new_perception
                 }
             }
         }
