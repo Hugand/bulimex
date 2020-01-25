@@ -10,6 +10,7 @@ class Agent{
             last_action: 'mf', // mf, rl, rr
             n_steps_after_last_food: 0
         }
+        this.max_n_steps = Math.round(Math.random() * (30-6))+6
         this.sensors = [
             {state: false, pos: null, type: null},
             {state: false, pos: null, type: null},
@@ -53,16 +54,19 @@ class Agent{
                         new_perception[0].state = true
                         new_perception[0].pos = i
                         new_perception[0].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                     case 0:
                         new_perception[7].state = true
                         new_perception[7].pos = i
                         new_perception[7].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                     case 1:
                         new_perception[6].state = true
                         new_perception[6].pos = i
                         new_perception[6].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                 }
             }else if(pos_dif.x === 1){
@@ -71,16 +75,19 @@ class Agent{
                         new_perception[2].state = true
                         new_perception[2].pos = i
                         new_perception[2].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                     case 0:
                         new_perception[3].state = true
                         new_perception[3].pos = i
                         new_perception[3].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                     case 1:
                         new_perception[4].state = true
                         new_perception[4].pos = i
                         new_perception[4].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                 }
             }else if(pos_dif.x === 0){
@@ -89,11 +96,13 @@ class Agent{
                         new_perception[1].state = true
                         new_perception[1].pos = i
                         new_perception[1].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                     case 1:
                         new_perception[5].state = true
                         new_perception[5].pos = i
                         new_perception[5].type = 'food'
+                        console.log("=> ", i)
                         return new_perception
                 }
             }
@@ -176,41 +185,51 @@ class Agent{
                 if(this.sensors[this.internal_state.direction].state
                     && this.sensors[this.internal_state.direction].type === 'food'){
                     this.move_forward()
-                    this.energy--
                     this.eat(this.sensors[this.internal_state.direction].pos, food)
                 }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, -1)].state
                     && this.sensors[this.calcSensorPos(this.internal_state.direction, -1)].type === 'food'){
                     this.rotate_left()
-                    this.energy--
                 }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, 1)].state
                     && this.sensors[this.calcSensorPos(this.internal_state.direction, 1)].type === 'food'){
                     this.rotate_right()
-                    this.energy--
                 }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, -2)].state
                     && this.sensors[this.calcSensorPos(this.internal_state.direction, -2)].type === 'food'){
                     this.rotate_left()
-                    this.energy--
                 }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, 2)].state
                     && this.sensors[this.calcSensorPos(this.internal_state.direction, 2)].type === 'food'){
                     this.rotate_right()
-                    this.energy--
                 }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, -3)].state
                     && this.sensors[this.calcSensorPos(this.internal_state.direction, -3)].type === 'food'){
                     this.rotate_left()
-                    this.energy--
                 }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, 3)].state
                     && this.sensors[this.calcSensorPos(this.internal_state.direction, 3)].type === 'food'){
                     this.rotate_right()
-                    this.energy--
                 }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, 4)].state
                     && this.sensors[this.calcSensorPos(this.internal_state.direction, 4)].type === 'food'){
                     if(this.internal_state.last_action === 'rl')
                         this.rotate_left()
                     else
                         this.rotate_right()
-                    this.energy--
                 }else{
-                    if(this.internal_state.n_steps_after_last_food < 6){
+                    console.log("SENSORS => ",(this.sensors[this.internal_state.direction].state
+                            && this.sensors[this.internal_state.direction].type === 'food'),
+                        (this.sensors[this.calcSensorPos(this.internal_state.direction, -1)].state
+                            && this.sensors[this.calcSensorPos(this.internal_state.direction, -1)].type === 'food'),
+                        (this.sensors[this.calcSensorPos(this.internal_state.direction, 1)].state
+                            && this.sensors[this.calcSensorPos(this.internal_state.direction, 1)].type === 'food'),
+                        (this.sensors[this.calcSensorPos(this.internal_state.direction, -2)].state
+                            && this.sensors[this.calcSensorPos(this.internal_state.direction, -2)].type === 'food'),
+                        (this.sensors[this.calcSensorPos(this.internal_state.direction, 2)].state
+                            && this.sensors[this.calcSensorPos(this.internal_state.direction, 2)].type === 'food'),
+                        (this.sensors[this.calcSensorPos(this.internal_state.direction, -3)].state
+                            && this.sensors[this.calcSensorPos(this.internal_state.direction, -3)].type === 'food'),
+                        (this.sensors[this.calcSensorPos(this.internal_state.direction, 3)].state
+                            && this.sensors[this.calcSensorPos(this.internal_state.direction, 3)].type === 'food'),
+                        (this.sensors[this.calcSensorPos(this.internal_state.direction, 4)].state
+                            && this.sensors[this.calcSensorPos(this.internal_state.direction, 4)].type === 'food')
+                        
+                    )
+                    if(this.internal_state.n_steps_after_last_food < this.max_n_steps){
                         this.move_forward()
                     }else{
                         if(this.sensors[this.calcSensorPos(this.internal_state.direction, 2)].state){
@@ -218,11 +237,10 @@ class Agent{
                         }else if(this.sensors[this.calcSensorPos(this.internal_state.direction, -2)].state){
                             this.rotate_right()
                         }else{
-                            this.rotate_right()
+                            this.rotate_left()
                         }
                         this.internal_state.n_steps_after_last_food = 0
                     }
-                    this.energy--
                 }
         }
     }
@@ -240,7 +258,9 @@ class Agent{
             this.internal_state.direction = 7
         else this.internal_state.direction--
 
+        this.energy--
         this.internal_state.last_action = 'rl'
+        this.max_n_steps = Math.round(Math.random() * (30-6))+6
     }
 
     rotate_right(){
@@ -256,7 +276,9 @@ class Agent{
             this.internal_state.direction = 0
         else this.internal_state.direction++
 
+        this.energy--
         this.internal_state.last_action = 'rr'
+        this.max_n_steps = Math.round(Math.random() * (30-6))+6
     }
 
     move_forward(){
@@ -292,14 +314,17 @@ class Agent{
                 break
         }
 
+        this.energy--
         this.internal_state.n_steps_after_last_food++
         this.internal_state.last_action = 'mf'
     }
 
     eat(pos, food){
+        let b = food.length
         food.splice(pos, 1)
         this.energy++
         this.internal_state.n_steps_after_last_food = 0
+        console.log("EATEN ", b, food.length)
     }
 
     calcSensorPos(pos, offset){
